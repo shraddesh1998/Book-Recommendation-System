@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popular Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #6c63ff;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .book {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .book img {
+            width: 80px;
+            height: 120px;
+            margin-right: 20px;
+        }
+        .book-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .book-details h3 {
+            margin: 0;
+        }
+        .book-details p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Popular Books</h1>
+        <a href="/recommend" style="color: white; text-decoration: none;">Go to Recommendations</a>
+    </header>
+    <div class="container">
+        <h2>Check Out These Popular Books</h2>
+        <div class="book-list">
+            {% for book, author, image, votes, rating in books_data %}
+                <div class="book">
+                    <img src="{{ image }}" alt="{{ book }}">
+                    <div class="book-details">
+                        <h3>{{ book }}</h3>
+                        <p><strong>Author:</strong> {{ author }}</p>
+                        <p><strong>Ratings:</strong> {{ votes }}</p>
+                        <p><strong>Average Rating:</strong> {{ rating }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
