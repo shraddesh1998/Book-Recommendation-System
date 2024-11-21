@@ -58,5 +58,4 @@ def recommend():
         # Handle cases where the book is not found
         return render_template('recommend.html', error="Book not found. Please try another title.", user_input=user_input)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
