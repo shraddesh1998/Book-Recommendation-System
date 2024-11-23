@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import pickle
 import numpy as np
+import os
 
 # Load data
 popular_df = pickle.load(open('popular.pkl', 'rb'))
@@ -58,4 +59,6 @@ def recommend():
         # Handle cases where the book is not found
         return render_template('recommend.html', error="Book not found. Please try another title.", user_input=user_input)
 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
 
