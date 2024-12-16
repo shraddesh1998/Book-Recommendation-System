@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import pickle
 import numpy as np
 import os
@@ -43,16 +43,21 @@ def recommend():
         )[1:5]
 
         # Gather recommendation data
-        data = [
-            {
-                "title": pt.index[i[0]],
-                "similarity_score": i[1],
-                 "image_url": popular_df.loc[popular_df['Book-Title'] == pt.index[i[0]], 'Image-URL-M']
-    .values[0] if not popular_df.loc[popular_df['Book-Title'] == pt.index[i[0]], 'Image-URL-M'].empty else 'default_image_url_or_placeholder.jpg'
-
-            }
-            for i in similar_items
-        ]
+        data = []
+        for i in similar_items:
+            title = pt.index[i[0]]
+            similarity_score = i[1]
+            
+            # Get the image URL or fallback to the default image
+            image_url = popular_df.loc[popular_df['Book-Title'] == title, 'Image-URL-M']
+            image_url = image_url.values[0] if not image_url.empty else url_for('static', filename='Default_Book.jpg')
+            
+            # Append the data dictionary to the list
+            data.append({
+                "title": title,
+                "similarity_score": similarity_score,
+                "image_url": image_url
+            })
 
         return render_template('recommend.html', data=data, user_input=user_input)
     except Exception as e:
@@ -61,4 +66,3 @@ def recommend():
 
 #if __name__ == "__main__":
     #app.run(host='0.0.0.0', port=int(os.getenv("PORT", 5000)))
-
