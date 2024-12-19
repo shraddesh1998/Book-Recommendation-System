@@ -111,7 +111,7 @@
         {% if error %}
             <div class="error-message">
                 <p>{{ error }}</p>
-            </div>
+            </div> 
         {% endif %}
 
         {% if data %}
@@ -122,11 +122,12 @@
                     <div class="recommendation-item">
                         <img src="{{ item.image_url }}" alt="{{ item.title }}">
                         <h4>{{ item.title }}</h4>
-                        <p>by {{ item.author }}</p>
+                        <p>by {{ item.Author }}</p>  <!-- Correct key here -->
                         <p class="similarity-score">Similarity: {{ item.similarity_score | round(2) }}</p>
                     </div>
                 {% endfor %}
             </div>
+            
         {% endif %}
     </div>
 
