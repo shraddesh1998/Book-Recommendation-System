@@ -2,12 +2,14 @@ from flask import Flask, render_template, request, url_for
 import pickle
 import numpy as np
 import os
+import pandas as pd 
+
 
 # Load data
 popular_df = pickle.load(open('popular.pkl', 'rb'))
 pt = pickle.load(open('pt.pkl', 'rb'))
 similarity_scores = pickle.load(open('similarity_scores.pkl', 'rb'))
-
+books_df = pd.read_csv('Books.csv')
 app = Flask(__name__)
 
 # Home Page to display popular books
@@ -19,7 +21,7 @@ def index():
         popular_df['Book-Author'].values,
         popular_df['Image-URL-M'].values,
         popular_df['num_ratings'].values,
-        popular_df['avg_rating'].values
+        popular_df['avg_ratings'].values
     )
     return render_template('index.html', books_data=books_data)
 
@@ -47,7 +49,7 @@ def recommend():
         for i in similar_items:
             title = pt.index[i[0]]
             similarity_score = i[1]
-            
+            Author = books_df.loc[books_df['Book-Title'] == title, 'Book-Author'].values[0]
             # Get the image URL or fallback to the default image
             image_url = popular_df.loc[popular_df['Book-Title'] == title, 'Image-URL-M']
             image_url = image_url.values[0] if not image_url.empty else url_for('static', filename='Default_Book.jpg')
@@ -56,7 +58,8 @@ def recommend():
             data.append({
                 "title": title,
                 "similarity_score": similarity_score,
-                "image_url": image_url
+                "image_url": image_url,
+                "Author": Author
             })
 
         return render_template('recommend.html', data=data, user_input=user_input)
