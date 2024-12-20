@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, url_for
 import pickle
 import numpy as np
 import os
-import pandas as pd 
-
+import pandas as pd
 
 # Load data
 popular_df = pickle.load(open('popular.pkl', 'rb'))
@@ -50,10 +49,14 @@ def recommend():
             title = pt.index[i[0]]
             similarity_score = i[1]
             Author = books_df.loc[books_df['Book-Title'] == title, 'Book-Author'].values[0]
-            # Get the image URL or fallback to the default image
-            image_url = popular_df.loc[popular_df['Book-Title'] == title, 'Image-URL-M']
-            image_url = image_url.values[0] if not image_url.empty else url_for('static', filename='Default_Book.jpg')
             
+            # Get the image URL or fallback to the default image
+            image_url = books_df.loc[books_df['Book-Title'] == title, 'Image-URL-M'].values
+            if image_url.size > 0:
+                image_url = image_url[0]  # Extract the first value if it exists
+            else:
+                image_url = url_for('static', filename='Default_Book.jpg')
+
             # Append the data dictionary to the list
             data.append({
                 "title": title,
